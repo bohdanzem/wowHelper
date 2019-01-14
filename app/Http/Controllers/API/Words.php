@@ -39,40 +39,9 @@ class Words extends Controller
         //$query->toSql();
         $wordsRecords = $query->get();
 
-        $wordsAll = $wordsRecords->map(function ($wordRecord) {
+        $words = $wordsRecords->map(function ($wordRecord) {
             return $wordRecord->{WordModel::FIELD_WORD};
         })->toArray();
-
-        $words = [];
-        foreach ($wordsAll as $word) {
-            $wordChars = preg_split('//u', $word, -1, PREG_SPLIT_NO_EMPTY);
-            usort($wordChars, 'strcoll');
-
-            $wordCharsCounts = [];
-            foreach ($wordChars as $char) {
-                if (!isset($wordCharsCounts[$char])) {
-                    $wordCharsCounts[$char] = 0;
-                }
-                $wordCharsCounts[$char]++;
-            }
-
-            $doSkip = false;
-            foreach ($wordCharsCounts as $wordCharsChar => $wordCharsN) {
-                if (!isset($charsCounts[$wordCharsChar])) {
-                    $doSkip = true;
-                    break;
-                }
-                if ($charsCounts[$wordCharsChar] < $wordCharsN) {
-                    $doSkip = true;
-                    break;
-                }
-            }
-            if ($doSkip) {
-                continue;
-            }
-
-            $words[] = $word;
-        }
 
         usort($words, 'strcoll');
 

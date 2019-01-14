@@ -15,4 +15,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::namespace('App\Http\Controllers')->get('import', 'Word@import');
+Route::get('import', 'Words@import');
